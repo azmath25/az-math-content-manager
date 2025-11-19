@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Content Editor - Az-Math</title>
+  
+  <!-- Base Styles -->
+  <link rel="stylesheet" href="../shared/css/base.css">
+  <link rel="stylesheet" href="../shared/css/math.css">
+  <link rel="stylesheet" href="css/editor.css">
+  
+  <!-- MathJax Configuration -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true,
+        processEnvironments: true
+      },
+      svg: {
+        fontCache: 'global'
+      },
+      startup: {
+        ready: () => {
+          console.log('✓ MathJax loaded');
+          MathJax.startup.defaultReady();
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+</head>
+<body>
+  <div class="container-narrow">
+    <!-- Header -->
+    <header class="editor-header">
+      <h1>✍️ Content Editor</h1>
+      <p class="text-gray">Create beautiful math content with rich formatting</p>
+    </header>
+
+    <!-- Content Type Selector -->
+    <div class="card mb-lg">
+      <div class="flex items-center justify-between mb-md">
+        <label class="font-bold">Content Type:</label>
+        <div class="flex gap-md">
+          <label class="radio-label">
+            <input type="radio" name="content-type" value="problem" checked>
+            <span>📝 Problem</span>
+          </label>
+          <label class="radio-label">
+            <input type="radio" name="content-type" value="lesson">
+            <span>📚 Lesson</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Metadata Fields -->
+      <div class="metadata-grid">
+        <div>
+          <label class="input-label">ID (auto if empty)</label>
+          <input type="number" id="content-id" placeholder="Auto-generated" min="1">
+        </div>
+
+        <div>
+          <label class="input-label">Title</label>
+          <input type="text" id="content-title" placeholder="Enter title...">
+        </div>
+
+        <div>
+          <label class="input-label">Category</label>
+          <select id="content-category">
+            <option value="Algebra">Algebra</option>
+            <option value="Geometry">Geometry</option>
+            <option value="Number Theory">Number Theory</option>
+            <option value="Combinatorics">Combinatorics</option>
+            <option value="Calculus">Calculus</option>
+            <option value="General">General</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="input-label">Difficulty</label>
+          <select id="content-difficulty">
+            <option value="Easy">Easy</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="Hard">Hard</option>
+          </select>
+        </div>
+
+        <div class="col-span-2">
+          <label class="input-label">Tags (comma-separated)</label>
+          <input type="text" id="content-tags" placeholder="equations, quadratic, factoring">
+        </div>
+      </div>
+    </div>
+
+    <!-- Editor Sections -->
+    <div id="editor-sections">
+      
+      <!-- Statement/Content Section -->
+      <div class="card mb-lg">
+        <div class="section-header">
+          <h3 id="main-section-title">Problem Statement</h3>
+          <div class="text-sm text-gray">Use math with $ or $$</div>
+        </div>
+        <div id="editorjs-main"></div>
+      </div>
+
+      <!-- Solutions Section (for problems only) -->
+      <div id="solutions-section" class="solutions-container">
+        <div class="flex items-center justify-between mb-md">
+          <h3>Solutions</h3>
+          <button class="btn btn-sm btn-outline" onclick="addSolution()">
+            ➕ Add Solution
+          </button>
+        </div>
+        <div id="solutions-list"></div>
+      </div>
+
+    </div>
+
+    <!-- Actions -->
+    <div class="card action-bar">
+      <div class="flex items-center justify-between gap-md">
+        <div class="flex gap-md">
+          <button class="btn btn-secondary" onclick="previewContent()">
+            👁️ Preview
+          </button>
+          <button class="btn btn-secondary" onclick="clearAll()">
+            🗑️ Clear
+          </button>
+        </div>
+        <div class="flex gap-md">
+          <button class="btn btn-outline" onclick="saveDraft()">
+            💾 Save Draft
+          </button>
+          <button class="btn btn-success" onclick="publishContent()">
+            🚀 Publish
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Preview Modal -->
+  <div id="preview-modal" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>📄 Preview</h3>
+        <button class="modal-close" onclick="closePreview()">&times;</button>
+      </div>
+      <div class="modal-body" id="preview-content"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closePreview()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editor.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+
+  <!-- Custom Scripts -->
+  <script type="module" src="js/math-tool.js"></script>
+  <script type="module" src="js/image-wrapper-tool.js"></script>
+  <script type="module" src="js/editor-setup.js"></script>
+  <script type="module" src="js/editor-actions.js"></script>
+</body>
+</html>
