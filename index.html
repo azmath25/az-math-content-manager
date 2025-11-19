@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Az-Math Content System</title>
+  <link rel="stylesheet" href="shared/css/base.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .hero {
+      text-align: center;
+      color: white;
+      max-width: 800px;
+      padding: var(--space-2xl);
+    }
+    
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+      color: white;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: var(--space-2xl);
+      color: rgba(255, 255, 255, 0.95);
+    }
+    
+    .action-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: var(--space-lg);
+      margin-top: var(--space-2xl);
+    }
+    
+    .action-card {
+      background: white;
+      padding: var(--space-xl);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-xl);
+      transition: all var(--transition-base);
+      text-decoration: none;
+      color: var(--gray-800);
+    }
+    
+    .action-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+    }
+    
+    .action-card .icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+    }
+    
+    .action-card h3 {
+      margin: 0 0 var(--space-sm);
+      color: var(--primary);
+    }
+    
+    .action-card p {
+      margin: 0;
+      color: var(--gray-600);
+      font-size: 0.9375rem;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(16, 185, 129, 0.2);
+      color: #059669;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-top: var(--space-sm);
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>🎓 Az-Math</h1>
+    <p>Modern math content system with rich editor and LaTeX support</p>
+    
+    <div class="action-cards">
+      
+      <a href="editor/index.html" class="action-card">
+        <div class="icon">✍️</div>
+        <h3>Rich Editor</h3>
+        <p>Create problems and lessons with beautiful math formatting and image wrapping</p>
+        <span class="status-badge">✓ Ready</span>
+      </a>
+      
+      <a href="uploader/index.html" class="action-card">
+        <div class="icon">📝</div>
+        <h3>LaTeX Uploader</h3>
+        <p>Upload LaTeX files or Overleaf projects directly</p>
+        <span class="status-badge" style="background: rgba(251, 146, 60, 0.2); color: #ea580c;">🚧 Coming Soon</span>
+      </a>
+      
+      <a href="viewer/problems.html" class="action-card">
+        <div class="icon">📚</div>
+        <h3>View Problems</h3>
+        <p>Browse and display published math problems</p>
+        <span class="status-badge" style="background: rgba(251, 146, 60, 0.2); color: #ea580c;">🚧 Coming Soon</span>
+      </a>
+      
+      <a href="viewer/lessons.html" class="action-card">
+        <div class="icon">📖</div>
+        <h3>View Lessons</h3>
+        <p>Browse and display published lessons</p>
+        <span class="status-badge" style="background: rgba(251, 146, 60, 0.2); color: #ea580c;">🚧 Coming Soon</span>
+      </a>
+      
+    </div>
+    
+    <div style="margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid rgba(255,255,255,0.3);">
+      <p style="font-size: 0.875rem; color: rgba(255,255,255,0.8);">
+        Made with ❤️ for mathematics education
+      </p>
+    </div>
+  </div>
+</body>
+</html>
