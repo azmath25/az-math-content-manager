@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Validator Test</title>
+</head>
+<body>
+  <h1>Validator Test</h1>
+  <pre id="output"></pre>
+
+  <script type="module">
+    // Simplified validator test (browser version)
+    const validContent = {
+      metadata: {
+        id: 1,
+        title: "Test",
+        contentType: "problem",
+        category: "Algebra",
+        difficulty: "Medium",
+        tags: ["test"],
+        author: "admin",
+        draft: false,
+        timestamp: "2025-01-15T10:00:00Z"
+      },
+      statement: [
+        {
+          type: "paragraph",
+          data: { text: "Test content" }
+        }
+      ]
+    };
+
+    const invalidContent = {
+      metadata: {
+        id: -1,
+        title: ""
+      }
+    };
+
+    // Basic validation checks
+    function basicValidate(content) {
+      const errors = [];
+      
+      if (!content.metadata) errors.push("Missing metadata");
+      if (!content.statement) errors.push("Missing statement");
+      if (content.metadata?.id < 1) errors.push("Invalid ID");
+      if (!content.metadata?.title) errors.push("Empty title");
+      
+      return {
+        valid: errors.length === 0,
+        errors
+      };
+    }
+
+    const result1 = basicValidate(validContent);
+    const result2 = basicValidate(invalidContent);
+
+    document.getElementById('output').textContent = 
+      `Valid content: ${result1.valid} (${result1.errors.length} errors)\n` +
+      `Invalid content: ${result2.valid} (${result2.errors.length} errors)\n` +
+      `\nInvalid content errors:\n${result2.errors.join('\n')}`;
+  </script>
+</body>
+</html>
