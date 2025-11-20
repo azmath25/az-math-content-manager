@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "id": 1,
+    "title": "Simple Quadratic Equation",
+    "contentType": "problem",
+    "category": "Algebra",
+    "difficulty": "Easy",
+    "tags": ["quadratic", "factoring"],
+    "author": "admin",
+    "draft": false,
+    "timestamp": "2025-01-15T10:00:00Z"
+  },
+  "statement": [
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "Solve the equation $x^2 - 5x + 6 = 0$."
+      }
+    }
+  ],
+  "solutions": [
+    {
+      "title": "Solution by Factoring",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "Factor the quadratic: $(x-2)(x-3) = 0$"
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "Therefore $x = 2$ or $x = 3$."
+          }
+        }
+      ]
+    }
+  ]
+}
