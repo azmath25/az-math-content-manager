@@ -1,0 +1,179 @@
+{
+  "metadata": {
+    "id": 1,
+    "title": "Quadratic Equation with Geometric Interpretation",
+    "contentType": "problem",
+    "category": "Algebra",
+    "difficulty": "Medium",
+    "tags": ["quadratic", "factoring", "geometry"],
+    "author": "admin",
+    "draft": false,
+    "timestamp": "2025-01-15T10:30:00Z"
+  },
+  
+  "statement": [
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "Consider the quadratic equation $x^2 - 5x + 6 = 0$. This problem explores both algebraic and geometric approaches to understanding its solutions."
+      }
+    },
+    {
+      "type": "image",
+      "data": {
+        "url": "https://example.com/parabola.png",
+        "alt": "Graph of parabola y = x^2 - 5x + 6",
+        "caption": "The parabola intersects the x-axis at the roots",
+        "alignment": "float-right",
+        "size": "medium"
+      }
+    },
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "The graph to the right shows the parabola $y = x^2 - 5x + 6$. Notice how the curve intersects the x-axis at exactly two points. These intersection points correspond to the roots of our equation."
+      }
+    },
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "From the graph, we can observe that the parabola opens upward (since the coefficient of $x^2$ is positive), and the vertex appears to be between the two roots. This visual representation helps us understand why the equation has two real solutions."
+      }
+    },
+    {
+      "type": "header",
+      "data": {
+        "text": "Part A: Algebraic Solution",
+        "level": 3
+      }
+    },
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "Find all real solutions to the equation $x^2 - 5x + 6 = 0$ by factoring."
+      }
+    },
+    {
+      "type": "header",
+      "data": {
+        "text": "Part B: Geometric Analysis",
+        "level": 3
+      }
+    },
+    {
+      "type": "list",
+      "data": {
+        "style": "ordered",
+        "items": [
+          "Determine the coordinates of the vertex",
+          "Find the axis of symmetry",
+          "Calculate the y-intercept"
+        ]
+      }
+    },
+    {
+      "type": "math",
+      "data": {
+        "latex": "\\text{Vertex formula: } x = -\\frac{b}{2a}",
+        "display": true
+      }
+    }
+  ],
+  
+  "solutions": [
+    {
+      "title": "Solution 1: Factoring Method",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "We need to find two numbers that multiply to 6 and add to -5. These numbers are -2 and -3."
+          }
+        },
+        {
+          "type": "math",
+          "data": {
+            "latex": "x^2 - 5x + 6 = (x - 2)(x - 3) = 0",
+            "display": true
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "By the zero product property, either $x - 2 = 0$ or $x - 3 = 0$."
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "Therefore, $x = 2$ or $x = 3$."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Solution 2: Quadratic Formula",
+      "blocks": [
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "Using the quadratic formula with $a = 1$, $b = -5$, and $c = 6$:"
+          }
+        },
+        {
+          "type": "math",
+          "data": {
+            "latex": "x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a} = \\frac{5 \\pm \\sqrt{25 - 24}}{2} = \\frac{5 \\pm 1}{2}",
+            "display": true
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "This gives us $x = \\frac{5 + 1}{2} = 3$ or $x = \\frac{5 - 1}{2} = 2$."
+          }
+        }
+      ]
+    },
+    {
+      "title": "Solution 3: Geometric Interpretation",
+      "blocks": [
+        {
+          "type": "image",
+          "data": {
+            "url": "https://example.com/vertex-diagram.png",
+            "alt": "Parabola with vertex marked",
+            "caption": "Vertex at (2.5, -0.25)",
+            "alignment": "float-left",
+            "size": "small"
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "The vertex of the parabola occurs at $x = -\\frac{b}{2a} = \\frac{5}{2} = 2.5$. The diagram shows this is exactly midway between our two roots at $x = 2$ and $x = 3$."
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "The y-coordinate of the vertex is $y = (2.5)^2 - 5(2.5) + 6 = 6.25 - 12.5 + 6 = -0.25$."
+          }
+        },
+        {
+          "type": "paragraph",
+          "data": {
+            "text": "Since the vertex has a negative y-coordinate and the parabola opens upward, the parabola must cross the x-axis at two points, confirming our algebraic solution."
+          }
+        },
+        {
+          "type": "quote",
+          "data": {
+            "text": "The geometric representation provides visual confirmation that our algebraic solutions are correct and helps build intuition about parabolic behavior.",
+            "caption": "Key Insight"
+          }
+        }
+      ]
+    }
+  ]
+}
