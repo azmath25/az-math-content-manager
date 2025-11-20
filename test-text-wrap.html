@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Wrapping Demo - Az-Math</title>
+  
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$']],
+        displayMath: [['$$', '$$']],
+        processEscapes: true
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+  
+  <style>
+    /* Base Styles */
+    :root {
+      --primary: #2563eb;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-600: #4b5563;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      line-height: 1.7;
+      color: var(--gray-800);
+      background: var(--gray-50);
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 3rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    /* Content Metadata */
+    .content-metadata {
+      padding-bottom: 2rem;
+      border-bottom: 2px solid var(--gray-200);
+      margin-bottom: 2rem;
+    }
+    
+    .content-title {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-bottom: 1rem;
+    }
+    
+    .content-meta-info {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border-radius: 0.375rem;
+    }
+    
+    .badge-category {
+      background: #eff6ff;
+      color: var(--primary);
+    }
+    
+    .badge-difficulty {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .badge-tag {
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+    
+    /* Typography */
+    h1, h2, h3, h4 {
+      font-weight: 600;
+      color: var(--gray-900);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    h2 { font-size: 1.75rem; }
+    h3 { font-size: 1.5rem; }
+    h4 { font-size: 1.25rem; }
+    
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.0625rem;
+    }
+    
+    /* Lists */
+    .content-list {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .content-list li {
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Quotes */
+    .content-quote {
+      border-left: 4px solid var(--primary);
+      padding: 1rem 1.5rem;
+      background: var(--gray-50);
+      border-radius: 0.5rem;
+      font-style: italic;
+      color: var(--gray-600);
+      margin: 1.5rem 0;
+    }
+    
+    .quote-caption {
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: 600;
+    }
+    
+    /* Math */
+    .math-inline {
+      padding: 0.1em 0.3em;
+      background: rgba(37, 99, 235, 0.08);
+      border-radius: 0.25rem;
+    }
+    
+    .math-display {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: var(--gray-50);
+      border-left: 4px solid var(--primary);
+      border-radius: 0.5rem;
+      overflow-x: auto;
+    }
+    
+    /* Solutions */
+    .solutions-container {
+      margin-top: 3rem;
+      padding-top: 3rem;
+      border-top: 3px solid var(--gray-200);
+    }
+    
+    .solutions-header {
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: var(--primary);
+    }
+    
+    .solution-block {
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: var(--gray-50);
+      border-radius: 0.75rem;
+      border: 2px solid var(--gray-200);
+    }
+    
+    .solution-title {
+      margin-top: 0 !important;
+      color: var(--primary);
+    }
+    
+    /* ============================================
+       CRITICAL: TEXT WRAPPING STYLES
+       ============================================ */
+    
+    .content-wrapper {
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .content-block {
+      margin-bottom: 1.5rem;
+    }
+    
+    .image-block {
+      margin: 1.5rem 0;
+    }
+    
+    /* Center-aligned images */
+    .image-block.align-center {
+      text-align: center;
+      clear: both;
+    }
+    
+    .image-block.align-center img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Float-left images - CRITICAL FOR TEXT WRAP */
+    .image-block.align-float-left {
+      float: left;
+      margin: 0 1.5rem 1rem 0;
+      clear: left;
+    }
+    
+    .image-block.align-float-left img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Float-right images - CRITICAL FOR TEXT WRAP */
+    .image-block.align-float-right {
+      float: right;
+      margin: 0 0 1rem 1.5rem;
+      clear: right;
+    }
+    
+    .image-block.align-float-right img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* Image sizes */
+    .image-block.size-small { max-width: 30%; }
+    .image-block.size-medium { max-width: 50%; }
+    .image-block.size-large { max-width: 70%; }
+    .image-block.size-full {
+      max-width: 100%;
+      float: none !important;
+    }
+    
+    /* Captions */
+    .image-caption {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--gray-600);
+      text-align: center;
+    }
+    
+    /* Ensure proper clearing */
+    .clearfix::after,
+    .content-wrapper::after,
+    .solution-block::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    
+    /* Headers clear by default */
+    .content-block h1,
+    .content-block h2,
+    .content-block h3 {
+      clear: both;
+    }
+    
+    /* Images styling */
+    .image-block img {
+      border-radius: 0.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      background: var(--gray-100);
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+      .image-block.align-float-left,
+      .image-block.align-float-right {
+        float: none !important;
+        margin: 1.5rem auto !important;
+        max-width: 100% !important;
+        text-align: center;
+      }
+      
+      .container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="content-root">
+      <!-- Content will be rendered here -->
+    </div>
+  </div>
+
+  <script type="module">
+    // Sample content with image wrapping
+    const sampleContent = {
+      metadata: {
+        id: 1,
+        title: "Perfect Text Wrapping Around Images",
+        contentType: "problem",
+        category: "Algebra",
+        difficulty: "Medium",
+        tags: ["demonstration", "text-wrap", "images"],
+        author: "admin",
+        draft: false,
+        timestamp: new Date().toISOString()
+      },
+      
+      statement: [
+        {
+          type: "paragraph",
+          data: {
+            text: "This demonstration shows how text perfectly wraps around images in different configurations. The following sections contain images with float-left, float-right, and center alignments."
+          }
+        },
+        {
+          type: "image",
+          data: {
+            url: "data:image/svg+xml,%3Csvg width='400' height='300' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='400' height='300' fill='%232563eb'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='24' font-family='Arial'%3EFLOAT RIGHT%3C/text%3E%3C/svg%3E",
+            alt: "Float right demonstration",
+            caption: "This image floats to the right",
+            alignment: "float-right",
+            size: "medium"
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "Notice how this paragraph wraps around the blue image on the right. The text flows naturally alongside the image, creating a professional layout commonly seen in magazines and textbooks. This is achieved through CSS float properties combined with proper margin spacing."
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "As you continue reading, you'll see that multiple paragraphs can wrap around a single floated image. The text automatically adjusts its width to accommodate the image, ensuring optimal readability. This works seamlessly with mathematical content as well, such as the equation $x^2 + y^2 = r^2$ appearing inline with the text."
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "The floating behavior is responsive - on mobile devices, images automatically switch to full-width center alignment to maintain readability on smaller screens. This ensures your content looks great on any device."
+          }
+        },
+        {
+          type: "header",
+          data: {
+            text: "Float-Left Example",
+            level: 3
+          }
+        },
+        {
+          type: "image",
+          data: {
+            url: "data:image/svg+xml,%3Csvg width='300' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='300' height='200' fill='%2310b981'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='20' font-family='Arial'%3EFLOAT LEFT%3C/text%3E%3C/svg%3E",
+            alt: "Float left demonstration",
+            caption: "Smaller image on the left",
+            alignment: "float-left",
+            size: "small"
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "Here we have a green image floating to the left. This smaller image demonstrates how you can mix different sizes and alignments within the same document. The text wraps smoothly around it, maintaining consistent spacing and readability."
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "Float-left is particularly useful when you want to maintain left-to-right reading flow while incorporating visual elements. The image doesn't interrupt the natural progression of the text."
+          }
+        },
+        {
+          type: "math",
+          data: {
+            latex: "\\int_{a}^{b} f(x)\\,dx = F(b) - F(a)",
+            display: true
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "Mathematical equations, whether inline or display mode, work perfectly with the text wrapping system. The layout engine ensures that all content types - text, images, and mathematics - coexist harmoniously."
+          }
+        },
+        {
+          type: "header",
+          data: {
+            text: "Center Alignment",
+            level: 3
+          }
+        },
+        {
+          type: "image",
+          data: {
+            url: "data:image/svg+xml,%3Csvg width='600' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='600' height='200' fill='%23f59e0b'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='28' font-family='Arial'%3ECENTER ALIGNED%3C/text%3E%3C/svg%3E",
+            alt: "Center alignment demonstration",
+            caption: "Large center-aligned image for emphasis",
+            alignment: "center",
+            size: "large"
+          }
+        },
+        {
+          type: "paragraph",
+          data: {
+            text: "Center-aligned images provide visual breaks and emphasis. Unlike floated images, center-aligned images clear any previous floats and stand alone, making them perfect for diagrams, charts, or key visual elements that deserve full attention."
+          }
+        },
+        {
+          type: "list",
+          data: {
+            style: "unordered",
+            items: [
+              "Float-left: Image on left, text wraps right",
+              "Float-right: Image on right, text wraps left",
+              "Center: Full-width visual break",
+              "Responsive: Automatic mobile optimization"
+            ]
+          }
+        }
+      ],
+      
+      solutions: [
+        {
+          title: "Solution: Understanding the CSS",
+          blocks: [
+            {
+              type: "image",
+              data: {
+                url: "data:image/svg+xml,%3Csvg width='250' height='250' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='250' height='250' fill='%23a855f7'/%3E%3Ctext x='50%25' y='50%25' text-anchor='middle' dy='.3em' fill='white' font-size='18' font-family='Arial'%3ECSS MAGIC%3C/text%3E%3C/svg%3E",
+                alt: "CSS diagram",
+                caption: "CSS float properties",
+                alignment: "float-right",
+                size: "small"
+              }
+            },
+            {
+              type: "paragraph",
+              data: {
+                text: "The text wrapping is achieved through CSS float properties. When an image has <code>float: left</code> or <code>float: right</code>, subsequent content flows around it. The key is proper margin spacing to prevent text from touching the image."
+              }
+            },
+            {
+              type: "paragraph",
+              data: {
+                text: "Critical techniques include: using clearfix to contain floats, setting max-width based on size constraints, and implementing responsive breakpoints that disable floating on mobile devices for better readability."
+              }
+            },
+            {
+              type: "quote",
+              data: {
+                text: "Perfect text wrapping is the hallmark of professional document layout. It requires careful attention to spacing, clearing, and responsive behavior.",
+                caption: "Layout Principle"
+              }
+            }
+          ]
+        }
+      ]
+    };
+
+    // Simple renderer
+    function renderContent(content) {
+      const parts = [];
+      
+      // Metadata
+      parts.push(`
+        <div class="content-metadata">
+          <h1 class="content-title">${content.metadata.title}</h1>
+          <div class="content-meta-info">
+            <span class="badge badge-category">${content.metadata.category}</span>
+            <span class="badge badge-difficulty">${content.metadata.difficulty}</span>
+            ${content.metadata.tags.map(t => `<span class="badge badge-tag">#${t}</span>`).join('')}
+          </div>
+        </div>
+      `);
+      
+      // Statement
+      parts.push('<div class="statement-block">');
+      parts.push(renderBlocks(content.statement));
+      parts.push('</div>');
+      
+      // Solutions
+      if (content.solutions) {
+        parts.push('<div class="solutions-container">');
+        parts.push('<h2 class="solutions-header">Solutions</h2>');
+        content.solutions.forEach(sol => {
+          parts.push('<div class="solution-block clearfix">');
+          parts.push(`<h2 class="solution-title">${sol.title}</h2>`);
+          parts.push(renderBlocks(sol.blocks));
+          parts.push('</div>');
+        });
+        parts.push('</div>');
+      }
+      
+      return `<div class="content-wrapper">${parts.join('\n')}</div>`;
+    }
+    
+    function renderBlocks(blocks) {
+      return blocks.map(block => {
+        switch (block.type) {
+          case 'paragraph':
+            return `<div class="content-block"><p>${block.data.text}</p></div>`;
+          
+          case 'header':
+            return `<div class="content-block"><h${block.data.level}>${block.data.text}</h${block.data.level}></div>`;
+          
+          case 'list':
+            const tag = block.data.style === 'ordered' ? 'ol' : 'ul';
+            return `<div class="content-block"><${tag} class="content-list">${block.data.items.map(i => `<li>${i}</li>`).join('')}</${tag}></div>`;
+          
+          case 'quote':
+            const caption = block.data.caption ? `<footer class="quote-caption">— ${block.data.caption}</footer>` : '';
+            return `<div class="content-block"><blockquote class="content-quote"><p>${block.data.text}</p>${caption}</blockquote></div>`;
+          
+          case 'math':
+            const delim = block.data.display ? '$$' : '$';
+            const className = block.data.display ? 'math-display' : 'math-inline';
+            return `<div class="content-block ${className}">${delim}${block.data.latex}${delim}</div>`;
+          
+          case 'image':
+            const align = `align-${block.data.alignment}`;
+            const size = `size-${block.data.size}`;
+            const cap = block.data.caption ? `<span class="image-caption">${block.data.caption}</span>` : '';
+            
+            // CRITICAL: Floated images don't get wrapped in content-block
+            if (block.data.alignment === 'float-left' || block.data.alignment === 'float-right') {
+              return `<div class="image-block ${align} ${size}"><img src="${block.data.url}" alt="${block.data.alt}">${cap}</div>`;
+            } else {
+              return `<div class="content-block"><div class="image-block ${align} ${size}"><img src="${block.data.url}" alt="${block.data.alt}">${cap}</div></div>`;
+            }
+          
+          default:
+            return '';
+        }
+      }).join('\n');
+    }
+    
+    // Render content
+    const root = document.getElementById('content-root');
+    root.innerHTML = renderContent(sampleContent);
+    
+    // Typeset math
+    if (window.MathJax) {
+      MathJax.typesetPromise([root]).catch(err => console.error('MathJax error:', err));
+    }
+  </script>
+</body>
+</html>
