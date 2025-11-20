@@ -1,275 +1,337 @@
-# az-math-content-manager
-# 🚀 Quick Start - Az-Math Content System
+# @azmath/core
 
-## 📦 Files to Upload (Copy-Paste to GitHub)
+Core content system for Az-Math with canonical schema, validation, and HTML rendering with perfect text wrapping.
 
-### 1. Root Files
-```
-✅ index.html
-✅ README.md
-```
+## Features
 
-### 2. Shared Resources
-```
-✅ shared/css/base.css
-✅ shared/css/math.css
-✅ shared/js/firebase-config.js
-```
+- 📋 **Canonical Schema** - Single source of truth for all content
+- ✅ **Content Validation** - Comprehensive validation against schema
+- 🎨 **HTML Renderer** - Convert canonical JSON to styled HTML
+- 🖼️ **Perfect Text Wrapping** - Images float with text wrapping beautifully
+- 📐 **Math Support** - MathJax integration for equations
+- 🎯 **Type Safety** - Full TypeScript support
+- 🧪 **Well Tested** - Comprehensive test suite
 
-### 3. Editor Files
-```
-✅ editor/index.html
-✅ editor/css/editor.css
-✅ editor/js/math-tool.js
-✅ editor/js/image-wrapper-tool.js
-✅ editor/js/editor-setup.js
-✅ editor/js/editor-actions.js
+## Installation
+
+```bash
+npm install @azmath/core
+# or
+pnpm add @azmath/core
 ```
 
----
+## Quick Start
 
-## 🎯 Upload Steps
+### Validate Content
 
-### Option 1: GitHub Web Interface (Easiest)
+```typescript
+import { validateContent } from '@azmath/core';
 
-1. **Go to your GitHub repository**
+const content = {
+  metadata: {
+    id: 1,
+    title: "My Problem",
+    contentType: "problem",
+    category: "Algebra",
+    difficulty: "Medium",
+    tags: ["quadratic"],
+    author: "admin",
+    draft: false,
+    timestamp: new Date().toISOString()
+  },
+  statement: [
+    {
+      type: "paragraph",
+      data: { text: "Solve $x^2 + 5x + 6 = 0$" }
+    }
+  ]
+};
 
-2. **Create folders and upload files:**
+const result = validateContent(content);
 
-   ```
-   Click "Add file" → "Upload files"
-   ```
-
-3. **For each file:**
-   - Create folder structure by typing: `shared/css/base.css`
-   - GitHub auto-creates folders
-   - Paste content from artifacts
-   - Commit
-
-4. **Enable GitHub Pages:**
-   - Settings → Pages
-   - Source: `main` branch, `/ (root)`
-   - Save
-   - Visit: `https://yourusername.github.io/repo-name/`
-
-### Option 2: Direct File Creation
-
-1. **Create new file:**
-   ```
-   Click "Add file" → "Create new file"
-   ```
-
-2. **Enter path with filename:**
-   ```
-   shared/css/base.css
-   ```
-
-3. **Paste content**
-
-4. **Commit changes**
-
-5. **Repeat for all files**
-
----
-
-## ✅ Verification Checklist
-
-After uploading, verify your repository has this structure:
-
-```
-your-repo/
-├── ✅ index.html
-├── ✅ README.md
-├── shared/
-│   ├── css/
-│   │   ├── ✅ base.css
-│   │   └── ✅ math.css
-│   └── js/
-│       └── ✅ firebase-config.js
-└── editor/
-    ├── ✅ index.html
-    ├── css/
-    │   └── ✅ editor.css
-    └── js/
-        ├── ✅ math-tool.js
-        ├── ✅ image-wrapper-tool.js
-        ├── ✅ editor-setup.js
-        └── ✅ editor-actions.js
-```
-
----
-
-## 🧪 Testing
-
-### 1. Open Your Site
-```
-https://yourusername.github.io/your-repo/
-```
-
-### 2. Click "Rich Editor"
-Should open: `https://yourusername.github.io/your-repo/editor/`
-
-### 3. Test Features
-
-**✅ Metadata:**
-- Enter title
-- Select category
-- Choose difficulty
-- Add tags
-
-**✅ Content:**
-- Type text
-- Click `+` to add blocks
-- Try `/` for quick commands
-
-**✅ Math:**
-- Click `+` → Math
-- Enter: `x^2 + y^2 = r^2`
-- Toggle inline/display
-- Check preview
-
-**✅ Image:**
-- Click `+` → Image
-- Upload test image
-- Try float-left wrapping
-- Add caption
-
-**✅ Solutions:**
-- Click "Add Solution"
-- Enter title
-- Add content
-- Try multiple solutions
-
-**✅ Actions:**
-- Preview content
-- Save draft
-- Publish
-
----
-
-## 🔥 Common Issues
-
-### ❌ "Firebase not defined"
-**Fix:** Check `firebase-config.js` is uploaded correctly
-
-### ❌ "Editor.js not loading"
-**Fix:** Check internet connection (CDN dependency)
-
-### ❌ Math not rendering
-**Fix:** Wait 2-3 seconds for MathJax to load
-
-### ❌ Images not uploading
-**Fix:** Check Firebase Storage rules in Firebase Console
-
-### ❌ 404 Page Not Found
-**Fix:** 
-- Wait 5 minutes after enabling GitHub Pages
-- Check file paths are exactly as shown
-- Ensure `index.html` is in root
-
----
-
-## 🎨 Quick Customization
-
-### Change Colors
-
-Edit `shared/css/base.css`:
-
-```css
-:root {
-  --primary: #2563eb;        /* Your brand color */
-  --primary-dark: #1d4ed8;
-  --primary-light: #60a5fa;
+if (result.valid) {
+  console.log('✓ Content is valid');
+} else {
+  console.error('Validation errors:', result.errors);
 }
 ```
 
-### Change Site Name
+### Render to HTML
 
-Edit `index.html` and `editor/index.html`:
+```typescript
+import { renderToHTML } from '@azmath/core';
 
-```html
-<title>Your Site Name</title>
-<h1>🎓 Your Site Name</h1>
+const html = renderToHTML(content, {
+  includeMetadata: true,
+  mathDelimiters: 'mathjax'
+});
+
+// Insert into page
+document.getElementById('content').innerHTML = html;
+
+// Typeset math if using MathJax
+if (window.MathJax) {
+  MathJax.typesetPromise();
+}
 ```
 
----
+### Using the Renderer Class
 
-## 📱 Mobile Testing
+```typescript
+import { HTMLRenderer } from '@azmath/core';
 
-1. Open on phone
-2. Should be fully responsive
-3. Test touch interactions
-4. Upload image from camera
+const renderer = new HTMLRenderer({
+  includeMetadata: true,
+  imageBaseUrl: 'https://cdn.example.com/',
+  cssClasses: {
+    wrapper: 'my-content',
+    statement: 'problem-statement',
+    solution: 'solution-block'
+  }
+});
 
----
+const html = renderer.render(content);
+```
 
-## 🎯 Next Steps
+## Content Structure
 
-### Immediate:
-1. ✅ Upload all files
-2. ✅ Enable GitHub Pages
-3. ✅ Test editor
-4. ✅ Create first problem
+### Metadata
 
-### Coming Soon:
-- 📚 Viewer pages (display problems/lessons)
-- 📝 LaTeX uploader
-- 🔍 Search functionality
-- 👤 User authentication
+```typescript
+{
+  id: number;                          // Unique identifier
+  title: string;                       // Content title (max 200 chars)
+  contentType: 'problem' | 'lesson';  // Type of content
+  category: 'Algebra' | 'Geometry' | ...;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  tags: string[];                      // Max 10 tags
+  author: string;
+  draft: boolean;
+  timestamp: string;                   // ISO 8601 format
+}
+```
 
----
+### Block Types
 
-## 💡 Pro Tips
+#### Paragraph
+```typescript
+{
+  type: "paragraph",
+  data: {
+    text: string  // Rich text with inline HTML/math
+  }
+}
+```
 
-### Content Creation:
-- Write in markdown first, then format
-- Use math sparingly for readability
-- Float small images, center large ones
-- Preview often
+#### Header
+```typescript
+{
+  type: "header",
+  data: {
+    text: string,
+    level: 1 | 2 | 3 | 4 | 5 | 6
+  }
+}
+```
 
-### Organization:
-- Use consistent naming for categories
-- Tag thoroughly for search
-- Add solution steps clearly
-- Keep difficulty accurate
+#### List
+```typescript
+{
+  type: "list",
+  data: {
+    style: "ordered" | "unordered",
+    items: string[]
+  }
+}
+```
 
-### Performance:
-- Optimize images before upload
-- Use external URLs for large files
-- Save drafts frequently
-- Clear browser cache if slow
+#### Quote
+```typescript
+{
+  type: "quote",
+  data: {
+    text: string,
+    caption?: string
+  }
+}
+```
 
----
+#### Math
+```typescript
+{
+  type: "math",
+  data: {
+    latex: string,      // LaTeX without delimiters
+    display: boolean    // true = $$, false = $
+  }
+}
+```
 
-## 📞 Need Help?
+#### Image (with Text Wrapping)
+```typescript
+{
+  type: "image",
+  data: {
+    url: string,
+    alt: string,
+    caption?: string,
+    alignment: "center" | "float-left" | "float-right",
+    size: "small" | "medium" | "large" | "full"
+  }
+}
+```
 
-### Check:
-1. Browser console (F12) for errors
-2. Network tab for failed requests
-3. Firebase console for backend issues
-4. README.md for detailed docs
+### Solutions (Problems Only)
 
-### Debug:
-- Open browser DevTools (F12)
-- Check Console tab
-- Look for red errors
-- Copy error message
+```typescript
+{
+  title: string,        // Max 100 chars
+  blocks: ContentBlock[]
+}
+```
 
----
+## Text Wrapping
 
-## ✨ Success!
+The renderer produces HTML with perfect text wrapping:
 
-If you can:
-- ✅ See the landing page
-- ✅ Open the editor
-- ✅ Add math equations
-- ✅ Upload images
-- ✅ Save/publish content
+- **Float-left**: Image on left, text wraps right
+- **Float-right**: Image on right, text wraps left
+- **Center**: Full-width, no wrapping
+- **Responsive**: Auto-centers on mobile
 
-**🎉 You're all set!**
+### Example
 
-Now start creating amazing math content! 🎓
+```typescript
+const content = {
+  metadata: { /* ... */ },
+  statement: [
+    {
+      type: "image",
+      data: {
+        url: "diagram.png",
+        alignment: "float-right",
+        size: "medium",
+        caption: "Important diagram"
+      }
+    },
+    {
+      type: "paragraph",
+      data: {
+        text: "This text wraps beautifully around the image..."
+      }
+    }
+  ]
+};
+```
 
----
+## Validation
 
-**Questions? Check README.md for full documentation.**
+### Validation Result
+
+```typescript
+interface ValidationResult {
+  valid: boolean;
+  errors: ValidationError[];
+}
+
+interface ValidationError {
+  path: string;      // e.g., "metadata.title"
+  message: string;   // Human-readable error
+  code: string;      // Error code for programmatic handling
+}
+```
+
+### Error Codes
+
+- `MISSING_REQUIRED` - Required field is missing
+- `INVALID_TYPE` - Wrong data type
+- `INVALID_VALUE` - Value outside allowed range/enum
+- `VALUE_TOO_LONG` - String exceeds max length
+- `ARRAY_EMPTY` - Array must have items
+- `ARRAY_TOO_LONG` - Too many items
+
+### Type Guards
+
+```typescript
+import { isValidContent } from '@azmath/core';
+
+if (isValidContent(data)) {
+  // TypeScript knows data is CanonicalContent
+  const html = renderToHTML(data);
+}
+```
+
+## CSS Requirements
+
+For proper text wrapping, include the float.css styles:
+
+```html
+<link rel="stylesheet" href="path/to/float.css">
+```
+
+Or copy the critical CSS:
+
+```css
+.image-block.align-float-left {
+  float: left;
+  margin: 0 1.5rem 1rem 0;
+}
+
+.image-block.align-float-right {
+  float: right;
+  margin: 0 0 1rem 1.5rem;
+}
+
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+```
+
+## Testing
+
+```bash
+# Run tests
+npm test
+
+# Watch mode
+npm run test:watch
+
+# With coverage
+npm run test:coverage
+```
+
+## API Reference
+
+### validateContent(content: any): ValidationResult
+Validates content against canonical schema.
+
+### isValidContent(content: any): content is CanonicalContent
+Type guard that validates and narrows type.
+
+### renderToHTML(content: CanonicalContent, options?: RenderOptions): string
+Quick render function.
+
+### class HTMLRenderer
+Full-featured renderer with options.
+
+#### constructor(options?: RenderOptions)
+Create renderer with options.
+
+#### render(content: CanonicalContent): string
+Render content to HTML string.
+
+#### renderBlocks(blocks: ContentBlock[]): string
+Render array of blocks.
+
+## Examples
+
+See `tests/fixtures/` for complete examples:
+- `valid-problem.json` - Simple problem
+- `valid-lesson.json` - Lesson with all block types
+- `example-problem.json` - Complex problem with text wrapping
+
+## License
+
+MIT © azmath25
