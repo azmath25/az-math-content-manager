@@ -1,0 +1,70 @@
+{
+  "metadata": {
+    "id": 100,
+    "title": "Introduction to Quadratic Equations",
+    "contentType": "lesson",
+    "category": "Algebra",
+    "difficulty": "Easy",
+    "tags": ["quadratic", "basics", "introduction"],
+    "author": "admin",
+    "draft": false,
+    "timestamp": "2025-01-15T10:00:00Z"
+  },
+  "statement": [
+    {
+      "type": "header",
+      "data": {
+        "text": "What is a Quadratic Equation?",
+        "level": 2
+      }
+    },
+    {
+      "type": "paragraph",
+      "data": {
+        "text": "A quadratic equation is an equation of the form $ax^2 + bx + c = 0$ where $a \\neq 0$."
+      }
+    },
+    {
+      "type": "math",
+      "data": {
+        "latex": "ax^2 + bx + c = 0, \\quad a \\neq 0",
+        "display": true
+      }
+    },
+    {
+      "type": "header",
+      "data": {
+        "text": "Key Components",
+        "level": 3
+      }
+    },
+    {
+      "type": "list",
+      "data": {
+        "style": "unordered",
+        "items": [
+          "$a$ is the quadratic coefficient",
+          "$b$ is the linear coefficient",
+          "$c$ is the constant term"
+        ]
+      }
+    },
+    {
+      "type": "image",
+      "data": {
+        "url": "https://example.com/parabola.png",
+        "alt": "Standard parabola",
+        "caption": "Graph of a quadratic function",
+        "alignment": "center",
+        "size": "medium"
+      }
+    },
+    {
+      "type": "quote",
+      "data": {
+        "text": "Every quadratic equation can be solved using the quadratic formula.",
+        "caption": "Key Insight"
+      }
+    }
+  ]
+}
