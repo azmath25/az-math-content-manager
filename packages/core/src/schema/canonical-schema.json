@@ -1,0 +1,312 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Az-Math Canonical Content Schema",
+  "description": "Universal content representation for problems and lessons",
+  "version": "1.0.0",
+  
+  "definitions": {
+    
+    "contentType": {
+      "type": "string",
+      "enum": ["problem", "lesson"],
+      "description": "Type of content"
+    },
+    
+    "metadata": {
+      "type": "object",
+      "required": ["id", "title", "contentType"],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "description": "Unique identifier",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Content title"
+        },
+        "contentType": {
+          "$ref": "#/definitions/contentType"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["Algebra", "Geometry", "Number Theory", "Combinatorics", "Calculus", "General"],
+          "default": "General"
+        },
+        "difficulty": {
+          "type": "string",
+          "enum": ["Easy", "Medium", "Hard"],
+          "default": "Medium"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 50
+          },
+          "uniqueItems": true,
+          "maxItems": 10
+        },
+        "author": {
+          "type": "string",
+          "default": "admin"
+        },
+        "draft": {
+          "type": "boolean",
+          "default": false
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    
+    "block": {
+      "type": "object",
+      "required": ["type", "data"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["paragraph", "header", "list", "quote", "math", "image"]
+        },
+        "data": {
+          "type": "object"
+        }
+      }
+    },
+    
+    "paragraphBlock": {
+      "allOf": [
+        { "$ref": "#/definitions/block" },
+        {
+          "properties": {
+            "type": { "const": "paragraph" },
+            "data": {
+              "type": "object",
+              "required": ["text"],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "Rich text with inline HTML and math"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "headerBlock": {
+      "allOf": [
+        { "$ref": "#/definitions/block" },
+        {
+          "properties": {
+            "type": { "const": "header" },
+            "data": {
+              "type": "object",
+              "required": ["text", "level"],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "Header text"
+                },
+                "level": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 6,
+                  "description": "Header level (h1-h6)"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "listBlock": {
+      "allOf": [
+        { "$ref": "#/definitions/block" },
+        {
+          "properties": {
+            "type": { "const": "list" },
+            "data": {
+              "type": "object",
+              "required": ["style", "items"],
+              "properties": {
+                "style": {
+                  "type": "string",
+                  "enum": ["ordered", "unordered"]
+                },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "minItems": 1
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "quoteBlock": {
+      "allOf": [
+        { "$ref": "#/definitions/block" },
+        {
+          "properties": {
+            "type": { "const": "quote" },
+            "data": {
+              "type": "object",
+              "required": ["text"],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "description": "Quote text"
+                },
+                "caption": {
+                  "type": "string",
+                  "description": "Attribution"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "mathBlock": {
+      "allOf": [
+        { "$ref": "#/definitions/block" },
+        {
+          "properties": {
+            "type": { "const": "math" },
+            "data": {
+              "type": "object",
+              "required": ["latex", "display"],
+              "properties": {
+                "latex": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "LaTeX math code (without delimiters)"
+                },
+                "display": {
+                  "type": "boolean",
+                  "description": "true = display mode ($$), false = inline ($)"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "imageBlock": {
+      "allOf": [
+        { "$ref": "#/definitions/block" },
+        {
+          "properties": {
+            "type": { "const": "image" },
+            "data": {
+              "type": "object",
+              "required": ["url"],
+              "properties": {
+                "url": {
+                  "type": "string",
+                  "format": "uri",
+                  "description": "Image URL (Firebase Storage or external)"
+                },
+                "alt": {
+                  "type": "string",
+                  "default": "Image",
+                  "description": "Alt text for accessibility"
+                },
+                "caption": {
+                  "type": "string",
+                  "description": "Optional caption below image"
+                },
+                "alignment": {
+                  "type": "string",
+                  "enum": ["center", "float-left", "float-right"],
+                  "default": "center",
+                  "description": "Image positioning and text wrap behavior"
+                },
+                "size": {
+                  "type": "string",
+                  "enum": ["small", "medium", "large", "full"],
+                  "default": "medium",
+                  "description": "Image size constraint"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    
+    "solution": {
+      "type": "object",
+      "required": ["title", "blocks"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Solution title (e.g., 'Method 1: Factoring')"
+        },
+        "blocks": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              { "$ref": "#/definitions/paragraphBlock" },
+              { "$ref": "#/definitions/headerBlock" },
+              { "$ref": "#/definitions/listBlock" },
+              { "$ref": "#/definitions/quoteBlock" },
+              { "$ref": "#/definitions/mathBlock" },
+              { "$ref": "#/definitions/imageBlock" }
+            ]
+          },
+          "minItems": 1
+        }
+      }
+    }
+  },
+  
+  "type": "object",
+  "required": ["metadata", "statement"],
+  "properties": {
+    
+    "metadata": {
+      "$ref": "#/definitions/metadata"
+    },
+    
+    "statement": {
+      "type": "array",
+      "description": "Problem statement or lesson content blocks",
+      "items": {
+        "oneOf": [
+          { "$ref": "#/definitions/paragraphBlock" },
+          { "$ref": "#/definitions/headerBlock" },
+          { "$ref": "#/definitions/listBlock" },
+          { "$ref": "#/definitions/quoteBlock" },
+          { "$ref": "#/definitions/mathBlock" },
+          { "$ref": "#/definitions/imageBlock" }
+        ]
+      },
+      "minItems": 1
+    },
+    
+    "solutions": {
+      "type": "array",
+      "description": "Solutions (only for problems)",
+      "items": {
+        "$ref": "#/definitions/solution"
+      }
+    }
+  }
+}
