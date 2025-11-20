@@ -1,0 +1,267 @@
+/* packages/core/src/renderer/styles/float.css */
+/* Perfect text wrapping around images */
+
+/* ============================================
+   IMAGE FLOAT CONTAINERS
+   ============================================ */
+
+.content-wrapper {
+  /* Main content container */
+  width: 100%;
+  overflow: hidden; /* Contain floats */
+}
+
+.content-block {
+  /* Each block (paragraph, header, etc.) */
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   IMAGE BLOCKS
+   ============================================ */
+
+.image-block {
+  margin: 1.5rem 0;
+  clear: both; /* Start fresh by default */
+}
+
+/* Center-aligned images (no float) */
+.image-block.align-center {
+  text-align: center;
+  clear: both;
+}
+
+.image-block.align-center img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Float-left images */
+.image-block.align-float-left {
+  float: left;
+  margin: 0 1.5rem 1rem 0; /* Right and bottom spacing */
+  clear: left; /* Clear previous left floats */
+}
+
+.image-block.align-float-left img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Float-right images */
+.image-block.align-float-right {
+  float: right;
+  margin: 0 0 1rem 1.5rem; /* Left and bottom spacing */
+  clear: right; /* Clear previous right floats */
+}
+
+.image-block.align-float-right img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* ============================================
+   IMAGE SIZES
+   ============================================ */
+
+.image-block.size-small {
+  max-width: 30%;
+}
+
+.image-block.size-medium {
+  max-width: 50%;
+}
+
+.image-block.size-large {
+  max-width: 70%;
+}
+
+.image-block.size-full {
+  max-width: 100%;
+  float: none !important; /* Full width images don't float */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+/* ============================================
+   IMAGE CAPTIONS
+   ============================================ */
+
+.image-caption {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: #6b7280; /* gray-600 */
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* ============================================
+   TEXT WRAPPING BEHAVIOR
+   ============================================ */
+
+/* Paragraphs should wrap around floated images */
+.content-block p {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Headers should clear floats by default */
+.content-block h1,
+.content-block h2,
+.content-block h3,
+.content-block h4,
+.content-block h5,
+.content-block h6 {
+  clear: both;
+  padding-top: 0.5rem;
+}
+
+/* BUT: If a header immediately follows a float, don't clear */
+.image-block.align-float-left + .content-block h1,
+.image-block.align-float-left + .content-block h2,
+.image-block.align-float-left + .content-block h3,
+.image-block.align-float-right + .content-block h1,
+.image-block.align-float-right + .content-block h2,
+.image-block.align-float-right + .content-block h3 {
+  clear: none;
+  padding-top: 0;
+}
+
+/* Lists can wrap around floats */
+.content-block ul,
+.content-block ol {
+  overflow: visible;
+}
+
+/* ============================================
+   CLEARFIX UTILITIES
+   ============================================ */
+
+/* Clear floats after a section */
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Force clear before new sections */
+.solution-block,
+.statement-block {
+  clear: both;
+}
+
+/* ============================================
+   RESPONSIVE BEHAVIOR
+   ============================================ */
+
+@media (max-width: 768px) {
+  /* On mobile, disable floating for better readability */
+  .image-block.align-float-left,
+  .image-block.align-float-right {
+    float: none !important;
+    margin: 1.5rem auto !important;
+    max-width: 100% !important;
+    text-align: center;
+  }
+  
+  .image-block.align-float-left img,
+  .image-block.align-float-right img {
+    margin: 0 auto;
+  }
+  
+  /* Adjust sizes for mobile */
+  .image-block.size-small,
+  .image-block.size-medium {
+    max-width: 100% !important;
+  }
+  
+  .image-block.size-large {
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small screens: all images full width */
+  .image-block {
+    max-width: 100% !important;
+    margin: 1rem 0 !important;
+    float: none !important;
+  }
+}
+
+/* ============================================
+   EDGE CASES & FIXES
+   ============================================ */
+
+/* Prevent orphaned floats at bottom */
+.content-wrapper::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Ensure images don't overflow container */
+.image-block img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Multiple sequential floats on same side */
+.image-block.align-float-left + .image-block.align-float-left {
+  clear: left;
+}
+
+.image-block.align-float-right + .image-block.align-float-right {
+  clear: right;
+}
+
+/* Prevent text from getting too narrow between two floats */
+@media (min-width: 769px) {
+  .content-block {
+    min-height: 0; /* Allow natural wrapping */
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .image-block.align-float-left,
+  .image-block.align-float-right {
+    float: none;
+    margin: 1rem auto;
+    text-align: center;
+    page-break-inside: avoid;
+  }
+  
+  .image-block img {
+    max-width: 80%;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .image-block img {
+    border: 2px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .image-block img {
+    transition: none;
+  }
+}
